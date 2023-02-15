@@ -26,15 +26,30 @@ class MovieController {
   };
 
   static createMovie = (req, res, next) => {
-    const movie = new Movie(req.body);
+    const { movieId } = req.body;
+
+    const movie = Movie.find({ movieId });
 
     movie
-      .save()
       .then((result) => {
-        res.send({
-          message: "Success insert data",
-          data: result,
-        });
+        if (!result) {
+          console.log("movie not found");
+          const movie = new Movie(req.body);
+
+          movie
+            .save()
+            .then((result) => {
+              res.send({
+                message: "Success insert data",
+                data: result,
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          res.status(400).send({ message: "id already exist" });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -44,6 +59,8 @@ class MovieController {
   static updateMovie = (req, res, next) => {
     const filter = { movieId: req.params.id };
     const update = req.body;
+    delete update.movieId;
+    delete update.type;
     const movie = Movie.findOneAndUpdate(filter, update, { new: true });
 
     movie
