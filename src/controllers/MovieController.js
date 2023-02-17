@@ -2,11 +2,18 @@ const Movie = require("../models/Movie");
 
 class MovieController {
   static getMovies = (req, res, next) => {
-    const movies = Movie.find({});
-
-    movies
+    Movie.find({ releaseDate: { $ne: null } })
+      .sort({ releaseDate: 1 })
       .then((result) => {
-        res.send(result);
+        const queryResult = result;
+
+        Movie.find({ releaseDate: null }).then((result) => {
+          result.forEach((movie) => {
+            queryResult.push(movie);
+          });
+
+          res.send(queryResult);
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -14,9 +21,7 @@ class MovieController {
   };
 
   static getSingleMovie = (req, res, next) => {
-    const movie = Movie.find({ movieId: req.params.id });
-
-    movie
+    Movie.find({ movieId: req.params.id })
       .then((result) => {
         res.send(result);
       })
@@ -26,34 +31,28 @@ class MovieController {
   };
 
   static createMovie = (req, res, next) => {
-    const { movieId } = req.body;
-
-    const movie = Movie.find({ movieId });
-
-    movie
+    Movie.find()
+      .limit(1)
+      .sort({ movieId: -1 })
       .then((result) => {
-        if (!result) {
-          console.log("movie not found");
-          const movie = new Movie(req.body);
+        const latestId = result[0].movieId;
+        const defaultData = { movieId: latestId + 1, type: "movie" };
+        const newData = Object.assign(req.body, defaultData);
+        const movie = new Movie(newData);
 
-          movie
-            .save()
-            .then((result) => {
-              res.send({
-                message: "Success insert data",
-                data: result,
-              });
-            })
-            .catch((err) => {
-              console.log(err);
+        movie
+          .save()
+          .then((result) => {
+            res.send({
+              message: "Success insert data",
+              data: result,
             });
-        } else {
-          res.status(400).send({ message: "id already exist" });
-        }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch();
   };
 
   static updateMovie = (req, res, next) => {
