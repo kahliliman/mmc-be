@@ -1,6 +1,7 @@
 const express = require("express");
 const Router = express.Router;
 const MovieController = require("../controllers/MovieController");
+const AuthController = require("../controllers/AuthController");
 const ROUTES = require("./routes");
 
 const routes = Router();
@@ -10,8 +11,16 @@ const routes = Router();
 
 routes.get(ROUTES.GET_ALL_MOVIE, MovieController.getMovies);
 routes.get(ROUTES.GET_SINGLE_MOVIE, MovieController.getSingleMovie);
-routes.post(ROUTES.CREATE_MOVIE, MovieController.createMovie);
-routes.patch(ROUTES.UPDATE_MOVIE, MovieController.updateMovie);
+routes.post(
+  ROUTES.CREATE_MOVIE,
+  AuthController.authenticateToken,
+  MovieController.createMovie
+);
+routes.patch(
+  ROUTES.UPDATE_MOVIE,
+  AuthController.authenticateToken,
+  MovieController.updateMovie
+);
 
 // routes.get(ROUTES.GET_ALL_SERIES, SeriesController.getSeries);
 // routes.get(ROUTES.GET_SINGLE_SERIES, SeriesController.getSingleSeries);
