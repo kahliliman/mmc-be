@@ -3,11 +3,7 @@ const Router = express.Router;
 const MovieController = require("../controllers/MovieController");
 const AuthController = require("../controllers/AuthController");
 const ROUTES = require("./routes");
-
 const routes = Router();
-
-// routes.post(ROUTES.LOGIN, AuthController.login);
-// routes.post(ROUTES.REGISTER, AuthController.register);
 
 routes.get(ROUTES.GET_ALL_MOVIE, MovieController.getMovies);
 routes.get(ROUTES.GET_SINGLE_MOVIE, MovieController.getSingleMovie);

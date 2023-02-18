@@ -52,7 +52,9 @@ class MovieController {
             console.log(err);
           });
       })
-      .catch();
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   static updateMovie = (req, res, next) => {
@@ -75,11 +77,9 @@ class MovieController {
     const filter = { movieId: req.params.id };
 
     Movie.findOneAndDelete(filter).then(() => {
-      res
-        .status(200)
-        .json({
-          message: `Successfully delete the movie data with id ${req.params.id} `,
-        });
+      res.status(200).json({
+        message: `Successfully delete the movie data with id ${req.params.id} `,
+      });
     });
   };
 }

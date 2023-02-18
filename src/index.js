@@ -8,14 +8,16 @@ const app = express();
 const PORT = process.env.PORT || 4100;
 
 const uri = `mongodb+srv://marvelmoviescountdown:${process.env.MONGODB_PASSWORD}@cluster0.ja6iqpg.mongodb.net/?retryWrites=true&w=majority`;
+const dbName = process.env.MONGODB_DATABASE;
 
 async function connect() {
   try {
     await mongoose.connect(uri, {
+      dbName,
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log("Connected to MongoDB");
+    console.log(`Connected to MongoDB, database ${dbName}`);
   } catch (error) {
     console.log(error);
   }
