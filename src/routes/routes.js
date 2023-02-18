@@ -5,6 +5,7 @@ const ROUTES = {
   GET_SINGLE_MOVIE: "/movie/:id",
   CREATE_MOVIE: "/movie/create",
   UPDATE_MOVIE: "/movie/update/:id",
+  DELETE_MOVIE: "/movie/delete/:id",
   GET_ALL_SERIES: "/series",
   GET_SINGLE_SERIES: "/series/:id",
   CREATE_SERIES: "/series/create",

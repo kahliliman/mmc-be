@@ -21,6 +21,11 @@ routes.patch(
   AuthController.authenticateToken,
   MovieController.updateMovie
 );
+routes.delete(
+  ROUTES.DELETE_MOVIE,
+  AuthController.authenticateToken,
+  MovieController.deleteMovie
+);
 
 // routes.get(ROUTES.GET_ALL_SERIES, SeriesController.getSeries);
 // routes.get(ROUTES.GET_SINGLE_SERIES, SeriesController.getSingleSeries);

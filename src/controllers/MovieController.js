@@ -70,6 +70,18 @@ class MovieController {
         console.log(err);
       });
   };
+
+  static deleteMovie = (req, res, next) => {
+    const filter = { movieId: req.params.id };
+
+    Movie.findOneAndDelete(filter).then(() => {
+      res
+        .status(200)
+        .json({
+          message: `Successfully delete the movie data with id ${req.params.id} `,
+        });
+    });
+  };
 }
 
 module.exports = MovieController;
