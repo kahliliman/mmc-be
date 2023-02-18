@@ -5,10 +5,14 @@ class AuthController {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
-    if (token === null) return res.sendStatus(401);
+    if (token === null)
+      return res.status(401).json({ message: "Unauthorized request" });
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-      if (err) return res.sendStatus(403);
+      if (err)
+        return res
+          .status(403)
+          .json({ message: "You are not allowed to use this request" });
       req.user = user;
       next();
     });
